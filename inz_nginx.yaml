@@ -1,0 +1,56 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: inz-deployment
+spec:
+  selector:
+    matchLabels:
+      app: my-inz
+  replicas: 1
+  template:
+    metadata:
+      labels:
+        app: my-inz
+    spec:
+      volumes:
+      - name: nginx-config
+        configMap:
+          name: inz-cm
+          items:
+            - key: ingest
+              path: ingest
+            - key: c1
+              path: cpu-1s
+            - key: c2
+              path: cpu-2s
+            - key: g1
+              path: gpu-1s
+            - key: g2
+              path: gpu-2s
+      containers:
+      - name: nginx-ingest
+        image: wito2403/rtmp-ingest:v1_1
+        ports:
+        - containerPort: 1935
+        volumeMounts:
+        - name: nginx-config
+          mountPath: /usr/local/nginx/conf/nginx.conf
+          subPath: ingest 
+      - name: nginx-cpu-1s
+        image: wito2403/rtmp_cpu:v3_1
+        ports:
+        - containerPort: 81
+        - containerPort: 1936
+        volumeMounts:
+        - name: nginx-config
+          mountPath: /usr/local/nginx/conf/nginx.conf
+          subPath: cpu-1s
+      - name: nginx-cpu-2s
+        image: wito2403/rtmp_cpu:v3_1
+        ports:
+        - containerPort: 82
+        - containerPort: 1937
+        volumeMounts:
+        - name: nginx-config
+          mountPath: /usr/local/nginx/conf/nginx.conf
+          subPath: cpu-2s

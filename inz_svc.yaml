@@ -1,0 +1,32 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: inz-service
+  labels:
+    app: my-inz
+spec:
+  type: NodePort
+  ports:
+  - name: http1
+    port: 8081
+    targetPort: 81
+    protocol: TCP
+  - name: http2
+    port: 8082
+    targetPort: 82
+    protocol: TCP
+  - name: http3
+    port: 8083
+    targetPort: 83
+    protocol: TCP
+  - name: http4
+    port: 8084
+    targetPort: 84
+    protocol: TCP
+  - name: rtmp1
+    port: 1936
+    targetPort: 1936
+    protocol: TCP
+  
+  selector:
+    app: my-inz
