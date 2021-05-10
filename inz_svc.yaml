@@ -1,3 +1,5 @@
+#10.05.2021 godz. 14
+
 apiVersion: v1
 kind: Service
 metadata:
@@ -8,25 +10,29 @@ spec:
   type: NodePort
   ports:
   - name: http1
-    port: 8081
+    port: 81
     targetPort: 81
+    nodePort: 30081
     protocol: TCP
   - name: http2
-    port: 8082
+    port: 82
     targetPort: 82
+    nodePort: 30082
     protocol: TCP
   - name: http3
-    port: 8083
+    port: 83
     targetPort: 83
+    nodePort: 30083
     protocol: TCP
   - name: http4
-    port: 8084
+    port: 84
     targetPort: 84
+    nodePort: 30084
     protocol: TCP
   - name: rtmp1
-    port: 1936
-    targetPort: 1936
-    protocol: TCP
-  
+    port: 1935
+    targetPort: 1935
+    nodePort: 31935
+    protocol: TCP  
   selector:
     app: my-inz

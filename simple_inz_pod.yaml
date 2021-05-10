@@ -5,9 +5,20 @@ metadata:
   labels:
     app: my-test
 spec:
+  volumes: 
+  - name: config
+    configMap:
+      name: port-cm
+      items:
+        - key: c1
+          path: cpu-1s
   containers: 
   - name: test
     image: wito2403/rtmp_cpu:v3_1
     ports:
-    - containerPort: 1935
-    - containerPort: 80
+    - containerPort: 1936
+    - containerPort: 81
+    volumeMounts:
+    - name: config
+      mountPath: /usr/local/nginx/conf/nginx.conf
+      subPath: cpu-1s

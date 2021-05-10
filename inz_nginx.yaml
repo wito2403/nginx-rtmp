@@ -1,3 +1,5 @@
+#10.05.2021 godz. 14
+
 apiVersion: apps/v1
 kind: Deployment
 metadata:
@@ -28,6 +30,7 @@ spec:
             - key: g2
               path: gpu-2s
       containers:
+      #INGEST
       - name: nginx-ingest
         image: wito2403/rtmp-ingest:v1_1
         ports:
@@ -36,6 +39,7 @@ spec:
         - name: nginx-config
           mountPath: /usr/local/nginx/conf/nginx.conf
           subPath: ingest 
+      #CPU 1s
       - name: nginx-cpu-1s
         image: wito2403/rtmp_cpu:v3_1
         ports:
@@ -45,6 +49,7 @@ spec:
         - name: nginx-config
           mountPath: /usr/local/nginx/conf/nginx.conf
           subPath: cpu-1s
+      #CPU 2s
       - name: nginx-cpu-2s
         image: wito2403/rtmp_cpu:v3_1
         ports:
@@ -54,3 +59,23 @@ spec:
         - name: nginx-config
           mountPath: /usr/local/nginx/conf/nginx.conf
           subPath: cpu-2s
+      #GPU 1s
+      - name: nginx-gpu-1s
+        image: wito2403/rtmp_gpu:v4_1
+        ports:
+        - containerPort: 83
+        - containerPort: 1938
+        volumeMounts:
+        - name: nginx-config
+          mountPath: /usr/local/nginx/conf/nginx.conf
+          subPath: gpu-1s
+      #GPU 2s
+      - name: nginx-gpu-2s
+        image: wito2403/rtmp_gpu:v4_1
+        ports:
+        - containerPort: 84
+        - containerPort: 1939
+        volumeMounts:
+        - name: nginx-config
+          mountPath: /usr/local/nginx/conf/nginx.conf
+          subPath: gpu-2s
